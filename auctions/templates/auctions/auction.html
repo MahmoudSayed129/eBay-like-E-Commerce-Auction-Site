@@ -1,0 +1,143 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <style>
+         .grid {
+                display: grid;
+                padding: 20px;
+                grid-column-gap: 20px;
+                grid-row-gap: 10px;
+                grid-template-columns:auto auto;
+            }
+
+            .grid-item {
+                border: 1px solid black;
+                background-color: white;
+                font-size: 20px;
+                padding: 20px;
+                text-align: center;
+            }
+            #comment {
+                border: 1px solid black;
+            }
+            input[type='submit'] {
+                border-radius: 5px;
+                border: none;
+                height: 30px;
+                margin-top: 10px; 
+                background-color: dodgerblue; 
+                color: white;
+            }
+            input[type='submit']:hover {
+                border: 1px solid black;
+            }
+            textarea:focus, input[type='number']:focus {
+                border: 1px solid aqua;
+                outline: 1px solid dodgerblue;
+            }
+    </style>
+    <h2>Title: {{auction.title}}</h2>
+    {% if not state %}
+        {% if owner%}
+        <form action="{% url 'close' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{auction.id}}">
+            <input type="submit" value="Colse">
+        </form>
+        {% endif %}
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            Closed!!!
+        </div>
+        {% if won %}
+        <div class="alert alert-success" role="alert">
+            You won this Aucation
+        </div>
+        {% endif %}
+    {% endif %}
+    {% if watched %}
+            <form action="{% url 'remove_from_wathclist' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{auction.id}}">
+                <input type="submit" value="Remove from Watchlist">
+            </form>
+            {% else %}
+            <form action="{% url 'add_to_wathclist' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{auction.id}}">
+                <input type="submit" value="Add to Watchlist">
+            </form>
+            {% endif %}
+        <div class="grid">
+            <div class="grid-item"><img src="{{auction.img_url}}" width="400px"/></div> 
+            <div class="grid-item">
+            Description: {{auction.description}}<br>
+            <hr>
+            Current Price: {{auction.final_bid}}$<br>
+            <hr>
+            Owner: {{auction.user.username}}<br>
+            <hr>
+            Date: {{auction.date}}<br>
+            <hr>
+            Category: {{auction.category}}
+            <hr>
+            {% if state or owner %}
+                <div class="alert alert-info" role="alert">
+                    Placing new bid is not available.
+                </div>
+             {% else %}
+                {% if biderror %}
+                    <div class="alert alert-danger" role="alert">
+                        Your bid must be greater than the Current Price!!
+                    </div>
+                    {% endif %}
+                <form action="{% url 'bid' %}" method="POST">
+                    {% csrf_token %}
+                    <div style="font-size: small; margin-bottom: 10px;">
+                        {% if num %}
+                        There are {{num}} bid(s).{% if yours %} Your bid is the Current one.{% endif %}
+                    {% else %}
+                        There is no bid so far 
+                    {% endif %}
+                    </div>
+                    <input type="number" min="0" name="bid" placeholder="Bid Amount" style="width: 300px; height: 30px;">
+                    <input type="hidden" name="id" value="{{auction.id}}"><br>
+                    <input type="submit" value="Place Bid" >
+                </form>
+            {% endif %}
+            </div>
+         <div id="comments">
+             <h3>Comments:</h3>
+            {% for comment in comments %}
+                <h4>{{comment.user.username}}:</h4>
+                {{comment.comment}}<br>
+                {{comment.date}}
+                <hr>
+            {% empty %}
+                {% if not state %}
+                    <div class="alert alert-info" role="alert">
+                        Be the first to comment on this Listing
+                    </div>
+                {% endif %}   
+            {% endfor %}
+            {% if not state %}
+                {% if commenterror %}
+                <div class="alert alert-danger" role="alert">
+                    You can't add empty Comment!!
+                </div>
+                {% endif %}
+                <form action="{% url 'commenting' %}" method="POST">
+                    {% csrf_token %}
+                    <textarea name="comment" placeholder="Comment" cols="80" rows="1"></textarea>
+                    <input type="hidden" name="id" value="{{auction.id}}"><br>
+                    <input type="submit" value="Post">
+                </form>
+            {% else %}
+            <div class="alert alert-info" role="alert">
+                Posting new comments is nolonger available.
+            </div>
+            {% endif %}
+            </div>
+       </div>
+       
+{% endblock %}

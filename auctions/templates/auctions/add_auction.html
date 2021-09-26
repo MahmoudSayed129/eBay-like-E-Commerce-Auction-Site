@@ -1,0 +1,47 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <style>
+        input[type='submit'] {
+                border-radius: 5px;
+                border: none;
+                height: 30px;
+                margin-top: 10px; 
+                background-color: dodgerblue; 
+                color: white;
+            }
+            input[type='submit']:hover {
+                border: 1px solid black;
+            }
+            .container {
+                text-align: center;
+                border-radius: 5px;
+                border: 1px solid black;
+                padding: 10px;
+                width: 400px;
+                /* margin-top: 100px;
+                margin-left: 300px; */
+            }
+            .items {
+                margin: 10px;
+                text-align: center;
+            }
+    </style>
+    {% if error%} 
+        <div class="alert alert-danger" role="alert">
+            You must enter Title, Description and Intial Bid !!
+        </div>
+    {% endif %}
+    <div class="container">
+        <h2>Add new Listing</h2>
+        <form action="{% url 'add_auction' %}" method="POST">
+            {% csrf_token %}
+            <div class="items"><input type="text" name="title" placeholder="Title"></div>
+            <div class="items"><textarea name="description" placeholder="Description" cols="30" rows="10"></textarea></div>
+            <div class="items"><input type="number" placeholder="Intial_bid" name="bid" min="0"></div>
+            <div class="items"><input type="text" name="img" placeholder="Image URL(optional)"></div>
+            <div class="items"><input type="category" name="category" placeholder="Category(optional)"></div>
+            <div class="items"><input type="submit" value="Create"></div>
+        </form>
+    </div>
+{% endblock %}

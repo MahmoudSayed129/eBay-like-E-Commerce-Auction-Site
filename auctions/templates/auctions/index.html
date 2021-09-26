@@ -1,0 +1,75 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<style>
+        .grid {
+               display: grid;
+               padding: 20px;
+               grid-column-gap: 20px;
+               grid-row-gap: 10px;
+               grid-template-columns: auto auto auto;
+           }
+
+           .grid-item {
+               border: 1px solid black;
+               background-color: white;
+               font-size: 20px;
+               padding: 20px;
+               text-align: center;
+       }
+       input[type='submit'] {
+                border-radius: 5px;
+                border: none;
+                height: 30px;
+                margin-top: 10px; 
+                background-color: dodgerblue; 
+                color: white;
+            }
+            input[type='submit']:hover {
+                border: 1px solid black;
+            }
+   </style>
+    {% if watchlist %}
+        <h2>Watchlist</h2>
+    {% else %}
+        <h2>Active Listings</h2>
+    {% endif %}
+    <div class="grid">
+    {% for auction in auctions %}
+        <div class="grid-item">
+            {% if auction.state %}
+            <div style="text-align: center;" class="alert alert-info" role="alert">
+                Closed!!!
+            </div>
+            {% endif %}
+            <img src="{{auction.auction.img_url}}" width="350px"/> <br>
+            <hr>
+            Title: {{auction.auction.title}} <br>
+            <hr>
+            Description: {{auction.auction.description}}<br>
+            <hr>
+            Current Price: {{auction.auction.final_bid}}$<br>
+            <hr>
+            Owner: {{auction.auction.user.username}}<br>
+            <hr>
+            Date: {{auction.auction.date}}<br>
+            <hr>
+            Category: {{auction.auction.category}}
+            <hr>
+            <form action="{% url 'auction_view' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{auction.auction.id}}">
+                <input type="submit" value="view Listing">
+            </form>
+       </div>
+    
+    {% empty %}
+        {% if watchlist %}
+            <h2>There is no auctions in your watchlist </h2>
+        {% else %}
+            <h2>There is no no Active Listings</h2>
+        {% endif %}
+    {% endfor %}
+    </div>
+
+{% endblock %}
