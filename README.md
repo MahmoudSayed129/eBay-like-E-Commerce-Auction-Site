@@ -47,22 +47,9 @@ This project is a Django-based web application that emulates the core functional
 - **Editing an Entry**: On the entry page, click "Edit" to modify the content of an entry.
 - **Random Entry**: Click on "Random Page" in the sidebar to view a random entry.
 
-## Contributing
-Contributions to this project are welcome! Please follow these steps to contribute:
-1. Fork the repository.
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`).
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`).
-4. Push to the branch (`git push origin feature/AmazingFeature`).
-5. Open a pull request.
-
 ## License
 Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Acknowledgments
 - Harvard University's CS50 course for the project idea and initial guidelines.
 - The Django and Python communities for their invaluable resources and support.
-
-## Contact
-Your Name - [@your_twitter](https://twitter.com/your_twitter) - email@example.com
-
-Project Link: [https://github.com/yourusername/wikipedia-like-encyclopedia](https://github.com/yourusername/wikipedia-like-encyclopedia)
