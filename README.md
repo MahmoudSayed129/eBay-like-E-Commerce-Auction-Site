@@ -23,7 +23,7 @@ This project is a Django-based web application that emulates the core functional
 ### Installation
 1. Clone the repository to your local machine:
    ```sh
-   git clone https://github.com/MahmoudSayed129/wikipedia-like-encyclopedia.git
+   git clone https://github.com/MahmoudSayed129/Wikipedia-like-Online-Encyclopedia.git
    ```
 2. Navigate to the project directory:
    ```sh
